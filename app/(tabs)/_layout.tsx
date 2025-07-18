@@ -1,45 +1,40 @@
+import { COLORS } from '@/constants/theme';
 import { Tabs } from 'expo-router';
 import React from 'react';
-import { Platform } from 'react-native';
+import { Ionicons } from "@expo/vector-icons"
 
-import { HapticTab } from '@/components/HapticTab';
-import { IconSymbol } from '@/components/ui/IconSymbol';
-import TabBarBackground from '@/components/ui/TabBarBackground';
-import { Colors } from '@/constants/Colors';
-import { useColorScheme } from '@/hooks/useColorScheme';
 
 export default function TabLayout() {
-  const colorScheme = useColorScheme();
+
 
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
+        tabBarShowLabel: false,
         headerShown: false,
-        tabBarButton: HapticTab,
-        tabBarBackground: TabBarBackground,
-        tabBarStyle: Platform.select({
-          ios: {
-            // Use a transparent background on iOS to show the blur effect
-            position: 'absolute',
-          },
-          default: {},
-        }),
+        tabBarActiveTintColor: COLORS.secondary,
+        tabBarInactiveTintColor: COLORS.grey,
+        tabBarHideOnKeyboard: true,
+        tabBarStyle: {
+          backgroundColor: 'black',
+          borderTopWidth: 0,
+          position: 'absolute',
+          elevation: 0,
+          height: 40,
+          paddingBottom: 8,
+        }
       }}>
-      <Tabs.Screen
-        name="index"
-        options={{
-          title: 'Home',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="house.fill" color={color} />,
-        }}
-      />
-      <Tabs.Screen
-        name="explore"
-        options={{
-          title: 'Explore',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
-        }}
-      />
+      <Tabs.Screen name='index' options={{
+        tabBarIcon: ({ size, color }) => <Ionicons name='home' size={size} color={color} />
+      }} />
+
+      <Tabs.Screen name='chat' options={{
+        tabBarIcon: ({ size, color }) => <Ionicons name='chatbubble-outline' size={size} color={color} />
+      }} />
+      <Tabs.Screen name='profile' options={{
+        tabBarIcon: ({ size, color }) => <Ionicons name='person-circle' size={size} color={color} />
+      }} />
+
     </Tabs>
   );
 }
