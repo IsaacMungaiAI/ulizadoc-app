@@ -19,32 +19,77 @@ export const styles = StyleSheet.create({
         fontFamily: "JetBrainsMono-Medium",
         color: COLORS.secondary,
     },
-    homeContent: {
+    messagesContainer: {
+        padding: 10,
+        flexGrow: 1,
+        justifyContent: 'flex-end',
+    },
+    messageBubble: {
+        backgroundColor: COLORS.surface,
+        padding: 10,
+        borderRadius: 8,
+        marginBottom: 10,
+        alignSelf: 'flex-start',
+    },
+    userBubble: {
+        backgroundColor: COLORS.secondary,
+        alignSelf: 'flex-end',
+        borderTopRightRadius: 0,
+    },
+    aiBubble: {
+        backgroundColor: COLORS.surface,
+        alignSelf: 'flex-start',
+        borderTopLeftRadius: 0,
+    },
+    typingDots: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: 4,
+    },
+    dot: {
+        width: 6,
+        height: 6,
+        backgroundColor: COLORS.white,
+        borderRadius: 3,
+        opacity: 0.6,
+    },
+
+    messageText: {
+        color: COLORS.white,
+    },
+    flex: {
         flex: 1,
-        justifyContent: 'space-between',
-        padding: 0,
     },
-    chatText: {
-        color: 'white',
-        textAlign: 'center',
-        fontFamily: "JetBrainsMono-Medium",
-        fontSize: 20,
-        fontWeight: '600'
-    },
+    inputBar: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        paddingHorizontal: 10,
+        paddingVertical: 8,
+        borderTopWidth: 1,
+        marginBottom: 50,
 
-    userInput: {
-        marginBottom: 10, // some spacing from bottom
     },
-
     input: {
         flex: 1,
         color: COLORS.white,
         paddingVertical: 8,
-        paddingHorizontal: 16,
-        marginRight: 12,
-        backgroundColor: COLORS.surface,
+        paddingHorizontal: 10,
+        backgroundColor: '#2C2C2C',
         borderRadius: 20,
         fontSize: 14,
+        maxHeight: 100,
+    },
+    sendButton: {
+        marginLeft: 8,
+        paddingHorizontal: 10,
+        paddingVertical: 8,
+        backgroundColor: COLORS.secondary,
+        borderRadius: 30,
+    },
+    sendText: {
+        color: COLORS.white,
+        fontWeight: 'bold',
     },
     brandSection: {
         alignItems: "center",
