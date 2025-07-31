@@ -7,6 +7,7 @@ import * as NavigationBar from 'expo-navigation-bar';
 import { useFonts } from 'expo-font';
 import { StatusBar } from 'expo-status-bar';
 import { Slot } from 'expo-router';
+import {ClerkProvider} from '@clerk/clerk-expo'
 
 // Keep splash visible while we load fonts.
 void SplashScreen.preventAutoHideAsync(); // ignore returned promise on purpose; can also await in an async IIFE
@@ -20,8 +21,8 @@ export default function RootLayout() {
   useEffect(() => {
     if (Platform.OS === 'android') {
       // setButtonStyleAsync is safe; background color may warn in edge-to-edge
-      NavigationBar.setButtonStyleAsync('light').catch(() => {});
-      NavigationBar.setBackgroundColorAsync('#000000').catch(() => {});
+      NavigationBar.setButtonStyleAsync('light').catch(() => { });
+      NavigationBar.setBackgroundColorAsync('#000000').catch(() => { });
     }
   }, []);
 
@@ -38,6 +39,8 @@ export default function RootLayout() {
   }
 
   return (
+    <ClerkProvider>
+
     <SafeAreaProvider>
       <SafeAreaView
         style={{
@@ -52,5 +55,6 @@ export default function RootLayout() {
       {/* Expo StatusBar auto-manages iOS/Android differences */}
       <StatusBar style="light" backgroundColor="#000" translucent={false} />
     </SafeAreaProvider>
+    </ClerkProvider>
   );
 }

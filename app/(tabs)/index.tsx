@@ -1,127 +1,77 @@
-import { Image } from 'expo-image';
+import React from 'react';
 import {
-  Text, TextInput, KeyboardAvoidingView,
-  Platform, View,
-  FlatList, TouchableOpacity,
-  ListRenderItem
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  ScrollView,
+  Platform,
+  Image,
 } from 'react-native';
+import { Ionicons, MaterialIcons } from '@expo/vector-icons';
+import { useRouter } from 'expo-router';
 import { styles } from '@/styles/home';
-import { useState } from 'react';
-import { COLORS } from '@/constants/theme';
-import { Ionicons } from '@expo/vector-icons';
 
-type Message = {
-  id: string;
-  text: string;
-  sender?: 'user' | 'ai';
+const COLORS = {
+  background: '#ffffff',
+  primary: '#2B7A78',
+  secondary: '#3AAFA9',
+  textDark: '#17252A',
+  textLight: '#DEF2F1',
+  grey: '#b0b0b0',
 };
 
-
 export default function HomeScreen() {
-  const [userPrompt, setUserPrompt] = useState('');
-  const [isTyping, setIsTyping] = useState(false)
-  const [messages, setMessages] = useState<Message[]>([
-    {
-      id: '1',
-      text: 'Hello! I am UlizaDoc, your AI health assistant.',
-      sender: 'ai',
-    },
-    {
-      id: '2',
-      text: 'How can I assist you today?',
-      sender: 'ai',
-    },
-  ]);
+  const router= useRouter();
 
-  const handleSend = () => {
-    if (userPrompt.trim()) {
-      setMessages(prev => [
-        ...prev,
-        { id: Date.now().toString(), text: userPrompt, sender: 'user' }
-      ]);
-      setUserPrompt('');
-      setIsTyping(true)
-      //simulate AI response
-      setTimeout(() => {
-        setIsTyping(false)
-        setMessages(prev => [
-          ...prev,
-          { id: Date.now().toString(), text: "I'm thinking...", sender: 'ai' }
-        ]);
-      }, 1000);
-    }
-  };
-
-
-  const renderMessageItem: ListRenderItem<Message> = ({ item }) => {
-    // Determine if the message is from the user or AI
-    const isUser = item.sender === 'user';
-    return (
-      <View style={[styles.messageBubble,
-      isUser ? styles.userBubble : styles.aiBubble,
-      ]}>
-        <Text style={styles.messageText}>{item.text}</Text>
-      </View>
-    )
-  };
-
-  const TypingIndicator = () => (
-    <View style={[styles.messageBubble, styles.aiBubble]}>
-      <View style={styles.typingDots}>
-        <View style={styles.dot} />
-        <View style={styles.dot} />
-        <View style={styles.dot} />
-      </View>
-    </View>
-  );
-
-  const mergedData: Message[] = isTyping
-    ? [...messages, { id: 'typing', text: "UlizaDoc is typing...", sender: 'ai' }]
-    : messages;
+  //router.push('/chat')
 
 
   return (
-    <View style={styles.container}>
-      {/*HEADER*/}
+    <ScrollView style={styles.container} contentContainerStyle={styles.content}>
+      {/* Header */}
       <View style={styles.header}>
         <Text style={styles.headerTitle}>UlizaDoc</Text>
+        <Ionicons name="person-circle-outline" size={30} color={COLORS.textDark} />
       </View>
-      <KeyboardAvoidingView
-        style={styles.flex}
-        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-        keyboardVerticalOffset={Platform.OS === 'ios' ? 64 : 0}
-      >
-        {/*CHAT CONTENT*/}
-        <FlatList
-          data={mergedData}
-          renderItem={(info) =>
-            info.item.id === 'typing' ? <TypingIndicator /> : renderMessageItem(info)
-          }
-          keyExtractor={item => item.id}
-          contentContainerStyle={styles.messagesContainer}
-          showsVerticalScrollIndicator={false}
-          ListEmptyComponent={
-            <Text style={styles.headerTitle}>No messages yet</Text>
-          }
+
+      {/* AI Assistant Avatar & Welcome */}
+      <View style={styles.welcomeSection}>
+        <Image
+          source={require('@/assets/images/adaptive-icon.png')} // Add an AI face/avatar here
+          style={styles.avatar}
         />
-        {/*USER INPUT*/}
-        <View style={styles.inputBar}>
-          <TextInput style={styles.input}
-            placeholder='Ask anything...'
-            placeholderTextColor={COLORS.grey}
-            value={userPrompt}
-            onChangeText={setUserPrompt}
-            multiline />
-          <TouchableOpacity onPress={handleSend} style={styles.sendButton}>
-            <Ionicons name="send" size={20} color={COLORS.background} />
-          </TouchableOpacity>
-        </View>
+        <Text style={styles.welcomeText}>Hello, I'm UlizaDoc 👋</Text>
+        <Text style={styles.subText}>Your personal AI health assistant</Text>
+      </View>
 
+      {/* Quick Actions */}
+      <View style={styles.actionsContainer}>
+        <TouchableOpacity style={styles.card} onPress={() => router.push('/chat')}>
+          <Ionicons name="chatbubble-ellipses-outline" size={24} color={COLORS.primary} />
+          <Text style={styles.cardText}>Ask a Question</Text>
+        </TouchableOpacity>
 
-      </KeyboardAvoidingView>
-    </View>
+        <TouchableOpacity style={styles.card}>
+          <MaterialIcons name="health-and-safety" size={24} color={COLORS.primary} />
+          <Text style={styles.cardText}>Check Symptoms</Text>
+        </TouchableOpacity>
 
+        <TouchableOpacity style={styles.card}>
+          <Ionicons name="bulb-outline" size={24} color={COLORS.primary} />
+          <Text style={styles.cardText}>Health Tips</Text>
+        </TouchableOpacity>
+      </View>
+
+      {/* Footer CTA */}
+      <TouchableOpacity
+        style={styles.chatButton}
+        onPress={() => router.push('/chat')}
+      >
+        <Ionicons name="chatbubbles" size={20} color="#fff" />
+        <Text style={styles.chatButtonText}>Start Chatting</Text>
+      </TouchableOpacity>
+    </ScrollView>
   );
 }
-
 
